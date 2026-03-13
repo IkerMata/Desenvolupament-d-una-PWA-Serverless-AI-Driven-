@@ -16,7 +16,7 @@ defineProps({
     <div class="property-content">
       <h3 class="property-title">{{ property.title }}</h3>
       <p class="property-loc">📍 {{ property.location }}</p>
-      <div class="property-price">€{{ Number(property.price).toLocaleString() }}</div>
+      <div class="property-price">€{{ Number(property.price).toLocaleString('es-ES') }}</div>
       <div class="property-footer">
         <span>🛌 {{ property.features.beds }}</span>
         <span>🚿 {{ property.features.baths }}</span>

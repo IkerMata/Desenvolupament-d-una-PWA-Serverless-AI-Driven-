@@ -33,6 +33,9 @@ We are following **Specification-Driven Development**.
 | PWA | @vite-pwa/nuxt | Enabled PWA installability and manifest. |
 | AI | ChatAssistant.vue | Implemented mandatory chatbot assistant. |
 | UI | Vue Components | Rebuilt property grid and admin dashboard with Vue 3. |
+| Chatbot | Localization | Translated assistant to Spanish (at user request). |
+| Bugfix | Hydration | Fixed price formatting mismatch between SSR and Client. |
+| PWA | Assets | Generated and linked mandatory PWA icons. |
 
 ## 5. Technical Challenges (Solved)
 - **Migration**: Converting Vanilla JS logic to Vue's reactive state and `useFetch`.

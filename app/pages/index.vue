@@ -27,36 +27,36 @@ const filteredProperties = computed(() => {
           <span class="logo-text">EstateFlow</span>
         </div>
         <nav>
-          <NuxtLink to="/admin" class="nav-link">Admin Dashboard</NuxtLink>
+          <NuxtLink to="/admin" class="nav-link">Panel Admin</NuxtLink>
         </nav>
       </div>
     </header>
 
     <section class="hero">
       <div class="hero-content">
-        <h1>Find Your Dream Home</h1>
-        <p>Luxury villas, modern apartments, and cozy houses in the best locations.</p>
+        <h1>Encuentra la Casa de tus Sueños</h1>
+        <p>Villas de lujo, apartamentos modernos y casas acogedoras en las mejores ubicaciones.</p>
       </div>
     </section>
 
     <main class="main-content">
       <section class="filters-section">
         <div class="search-bar">
-          <input v-model="searchInput" type="text" placeholder="Search by location or title...">
+          <input v-model="searchInput" type="text" placeholder="Busca por ubicación o título...">
         </div>
         <div class="filter-controls">
           <select v-model="typeFilter">
-            <option value="">All Types</option>
-            <option value="Apartment">Apartments</option>
-            <option value="House">Houses</option>
+            <option value="">Todos los Tipos</option>
+            <option value="Apartamento">Apartamentos</option>
+            <option value="Casa">Casas</option>
             <option value="Villa">Villas</option>
           </select>
           <select v-model="priceFilter">
-            <option value="">Any Price</option>
-            <option value="100000">Up to €100k</option>
-            <option value="300000">Up to €300k</option>
-            <option value="500000">Up to €500k</option>
-            <option value="1000000">Up to €1M</option>
+            <option value="">Cualquier Precio</option>
+            <option value="100000">Hasta 100k€</option>
+            <option value="300000">Hasta 300k€</option>
+            <option value="500000">Hasta 500k€</option>
+            <option value="1000000">Hasta 1M€</option>
           </select>
         </div>
       </section>
@@ -68,7 +68,7 @@ const filteredProperties = computed(() => {
           :property="prop" 
         />
         <div v-if="filteredProperties.length === 0" class="empty-state">
-          <p>No properties match your criteria.</p>
+          <p>No hay propiedades que coincidan con tu búsqueda.</p>
         </div>
       </div>
     </main>

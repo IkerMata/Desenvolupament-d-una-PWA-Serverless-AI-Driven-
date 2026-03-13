@@ -1,32 +1,44 @@
 <script setup>
 const isOpen = ref(false);
 const message = ref('');
+const isTyping = ref(false);
 const chatHistory = ref([
-  { role: 'assistant', content: 'Hello! I am your EstateFlow assistant. How can I help you find your dream home today?' }
+  { role: 'assistant', content: '¡Hola! Soy tu asistente de EstateFlow. ¿Cómo puedo ayudarte a encontrar la casa de tus sueños hoy?' }
 ]);
 
 const toggleChat = () => {
   isOpen.value = !isOpen.value;
 };
 
-const sendMessage = () => {
-  if (!message.value.trim()) return;
+const sendMessage = async () => {
+  if (!message.value.trim() || isTyping.value) return;
   
-  chatHistory.value.push({ role: 'user', content: message.value });
-  
-  // Simulate AI response
-  setTimeout(() => {
-    let response = "I'm looking into that for you. We have several great options in Marbella and Madrid.";
-    if (message.value.toLowerCase().includes('marbella')) {
-      response = "Marbella is a great choice! Our Modern Luxury Villa there is currently available for €1,250,000.";
-    } else if (message.value.toLowerCase().includes('cheap') || message.value.toLowerCase().includes('price')) {
-      response = "Our most affordable option right now is the Downtown Penthouse at €850,000.";
-    }
-    
-    chatHistory.value.push({ role: 'assistant', content: response });
-  }, 1000);
-  
+  const userContent = message.value;
+  chatHistory.value.push({ role: 'user', content: userContent });
   message.value = '';
+  isTyping.value = true;
+  
+  try {
+    const response = await $fetch('/api/chat', {
+      method: 'POST',
+      body: { 
+        messages: chatHistory.value.slice(0, -1),
+        message: userContent 
+      }
+    });
+
+    if (response) {
+      chatHistory.value.push(response);
+    }
+  } catch (err) {
+    console.error('Error sending message:', err);
+    chatHistory.value.push({ 
+      role: 'assistant', 
+      content: 'Lo siento, ha habido un error al procesar tu solicitud. ¿Podrías intentarlo de nuevo?' 
+    });
+  } finally {
+    isTyping.value = false;
+  }
 };
 </script>
 
@@ -39,16 +51,27 @@ const sendMessage = () => {
     
     <div v-if="isOpen" class="chatbot-window">
       <div class="chatbot-header">
-        <h3>EstateFlow Assistant</h3>
+        <h3>Asistente EstateFlow</h3>
       </div>
       <div class="chatbot-messages">
         <div v-for="(msg, idx) in chatHistory" :key="idx" :class="['message', msg.role]">
           <div class="message-content">{{ msg.content }}</div>
         </div>
+        <div v-if="isTyping" class="message assistant typing">
+          <div class="message-content italic text-gray-400">Escribiendo...</div>
+        </div>
       </div>
       <div class="chatbot-input">
-        <input v-model="message" @keyup.enter="sendMessage" type="text" placeholder="Ask me anything...">
-        <button @click="sendMessage">Send</button>
+        <input 
+          v-model="message" 
+          @keyup.enter="sendMessage" 
+          type="text" 
+          placeholder="Pregúntame lo que quieras..."
+          :disabled="isTyping"
+        >
+        <button @click="sendMessage" :disabled="isTyping || !message.trim()">
+          {{ isTyping ? '...' : 'Enviar' }}
+        </button>
       </div>
     </div>
   </div>
@@ -123,6 +146,17 @@ const sendMessage = () => {
   align-self: flex-end;
   background: #4f46e5;
   color: white;
+}
+
+.typing .message-content {
+  font-style: italic;
+  opacity: 0.7;
+}
+
+.chatbot-input input:disabled,
+.chatbot-input button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .chatbot-input {

@@ -21,7 +21,7 @@ const openModal = (prop = null) => {
       id: '',
       title: '',
       price: 0,
-      type: 'Apartment',
+      type: 'Apartamento',
       location: '',
       image: '',
       features: { beds: 0, baths: 0, sqft: 0 }
@@ -36,14 +36,14 @@ const closeModal = () => {
 
 const saveProperty = async () => {
   // Simulate API save
-  console.log('Saving property:', currentProp.value);
+  console.log('Guardando propiedad:', currentProp.value);
   closeModal();
-  alert('Property saved (Simulation)! In a real serverless app, this would call a POST/PUT endpoint.');
+  alert('Propiedad guardada (Simulación)! En una app serverless real, esto llamaría a un endpoint POST/PUT.');
 };
 
 const deleteProperty = (id) => {
-  if (confirm('Are you sure you want to delete this property?')) {
-    alert('Property deleted (Simulation)!');
+  if (confirm('¿Estás seguro de que quieres eliminar esta propiedad?')) {
+    alert('Propiedad eliminada (Simulación)!');
   }
 };
 </script>
@@ -57,43 +57,43 @@ const deleteProperty = (id) => {
           <span class="logo-text">EstateFlow Admin</span>
         </div>
         <nav>
-          <NuxtLink to="/" class="nav-link">View Public Site</NuxtLink>
+          <NuxtLink to="/" class="nav-link">Ver Sitio Público</NuxtLink>
         </nav>
       </div>
     </header>
 
     <main class="main-content">
       <section class="admin-actions">
-        <h2>Properties Management</h2>
-        <button @click="openModal()" class="btn btn-primary">+ Add New Property</button>
+        <h2>Gestión de Propiedades</h2>
+        <button @click="openModal()" class="btn btn-primary">+ Añadir Propiedad</button>
       </section>
 
       <section class="admin-list-container">
         <table class="admin-table">
           <thead>
             <tr>
-              <th>Image</th>
-              <th>Title</th>
-              <th>Price</th>
-              <th>Type</th>
-              <th>Status</th>
-              <th>Actions</th>
+              <th>Imagen</th>
+              <th>Título</th>
+              <th>Precio</th>
+              <th>Tipo</th>
+              <th>Estado</th>
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="prop in properties" :key="prop.id">
               <td><img :src="prop.images[0] || 'https://placehold.co/600x400?text=No+Image'" alt="" class="admin-thumb"></td>
               <td><strong>{{ prop.title }}</strong></td>
-              <td>€{{ Number(prop.price).toLocaleString() }}</td>
+              <td>{{ Number(prop.price).toLocaleString('es-ES') }} €</td>
               <td>{{ prop.type }}</td>
-              <td><span class="status-badge" :class="prop.status.toLowerCase()">{{ prop.status }}</span></td>
+              <td><span class="status-badge" :class="prop.status ? prop.status.toLowerCase() : ''">{{ prop.status }}</span></td>
               <td>
-                <button @click="openModal(prop)" class="btn-edit" title="Edit">✏️</button>
-                <button @click="deleteProperty(prop.id)" class="btn-delete" title="Delete">🗑️</button>
+                <button @click="openModal(prop)" class="btn-edit" title="Editar">✏️</button>
+                <button @click="deleteProperty(prop.id)" class="btn-delete" title="Eliminar">🗑️</button>
               </td>
             </tr>
             <tr v-if="!properties || properties.length === 0">
-              <td colspan="6" class="text-center">No properties found.</td>
+              <td colspan="6" class="text-center">No se han encontrado propiedades.</td>
             </tr>
           </tbody>
         </table>
@@ -103,37 +103,37 @@ const deleteProperty = (id) => {
     <!-- Modal for Add/Edit -->
     <div v-if="showModal" class="modal-overlay">
       <div class="modal">
-        <h2>{{ currentProp.id ? 'Edit Property' : 'Add Property' }}</h2>
+        <h2>{{ currentProp.id ? 'Editar Propiedad' : 'Añadir Propiedad' }}</h2>
         <form @submit.prevent="saveProperty">
           <div class="form-group">
-            <label>Title</label>
+            <label>Título</label>
             <input v-model="currentProp.title" type="text" required>
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label>Price (€)</label>
+              <label>Precio (€)</label>
               <input v-model="currentProp.price" type="number" required>
             </div>
             <div class="form-group">
-              <label>Type</label>
+              <label>Tipo</label>
               <select v-model="currentProp.type">
-                <option value="Apartment">Apartment</option>
-                <option value="House">House</option>
+                <option value="Apartamento">Apartamento</option>
+                <option value="Casa">Casa</option>
                 <option value="Villa">Villa</option>
               </select>
             </div>
           </div>
           <div class="form-group">
-            <label>Location</label>
+            <label>Ubicación</label>
             <input v-model="currentProp.location" type="text" required>
           </div>
           <div class="form-group">
-            <label>Image URL</label>
-            <input v-model="currentProp.image" type="url" placeholder="https://example.com/photo.jpg">
+            <label>URL de Imagen</label>
+            <input v-model="currentProp.image" type="url" placeholder="https://ejemplo.com/foto.jpg">
           </div>
           <div class="modal-actions">
-            <button type="button" class="btn btn-ghost" @click="closeModal">Cancel</button>
-            <button type="submit" class="btn btn-primary">Save Property</button>
+            <button type="button" class="btn btn-ghost" @click="closeModal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Guardar Propiedad</button>
           </div>
         </form>
       </div>
