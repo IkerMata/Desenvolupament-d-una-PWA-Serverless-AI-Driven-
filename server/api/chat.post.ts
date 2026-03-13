@@ -1,4 +1,3 @@
-```javascript
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 export default defineEventHandler(async (event) => {
@@ -12,17 +11,13 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  // Log key prefix for debugging (safe)
-  console.log(`Using API Key starting with: ${ apiKey.substring(0, 5) }...`);
-
   const body = await readBody(event);
   const { messages, message } = body;
 
   try {
     const genAI = new GoogleGenerativeAI(apiKey);
-    
-    // Some regions/keys might prefer the models/ prefix or specific versions
-    const model = genAI.getGenerativeModel({ 
+
+    const model = genAI.getGenerativeModel({
       model: 'gemini-1.5-flash',
       systemInstruction: {
         role: 'system',
@@ -60,18 +55,16 @@ export default defineEventHandler(async (event) => {
 
     const result = await chat.sendMessage(message);
     const response = await result.response;
-    
+
     return {
       role: 'assistant',
       content: response.text(),
     };
   } catch (error: any) {
     console.error('SERVER ERROR:', error);
-    // Expose the full error message to the frontend for debugging
     throw createError({
       statusCode: 500,
-      statusMessage: `AI Error: ${ error.message || 'Error desconocido' } `,
+      statusMessage: `AI Error: ${error.message || 'Error desconocido'}`,
     });
   }
 });
-```
