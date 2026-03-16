@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
     const genAI = new GoogleGenerativeAI(apiKey);
 
     const model = genAI.getGenerativeModel({
-      model: 'gemini-1.5-flash',
+      model: 'gemini-2.5-flash',
       systemInstruction: {
         role: 'system',
         parts: [{ text: "Eres un asistente experto en sector inmobiliario para la empresa EstateFlow. Tu objetivo es ayudar a los usuarios a encontrar la casa de sus sueños. Sé amable, profesional y conciso." }],
